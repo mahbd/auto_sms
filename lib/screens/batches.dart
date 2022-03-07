@@ -1,8 +1,11 @@
+import 'package:auto_sms/screens/batch_contact.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../models/batch_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../models/person_model.dart';
 
 class Batches extends StatefulWidget {
   const Batches({Key? key}) : super(key: key);
@@ -39,14 +42,14 @@ class _BatchesState extends State<Batches> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasData) return const Center(child: Text('No data'));
-            final List<Batch> contacts = snapshot.data!;
+            final List<Batch> _batches = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView.separated(
                 separatorBuilder: (context, index) => const Divider(
                   height: 10,
                 ),
-                itemCount: contacts.length,
+                itemCount: _batches.length,
                 itemBuilder: (context, index) {
                   return Slidable(
                     startActionPane: ActionPane(
@@ -54,7 +57,7 @@ class _BatchesState extends State<Batches> {
                       children: [
                         SlidableAction(
                           onPressed: (context) {
-                            showDeleteBatchDialog(context, contacts[index]);
+                            showDeleteBatchDialog(context, _batches[index]);
                           },
                           backgroundColor: const Color(0xFFFE4A49),
                           foregroundColor: Colors.white,
@@ -63,7 +66,7 @@ class _BatchesState extends State<Batches> {
                         ),
                         SlidableAction(
                           onPressed: (context) {
-                            showEditGroupDialog(context, contacts[index]);
+                            showEditGroupDialog(context, _batches[index]);
                           },
                           backgroundColor: const Color(0xFF21B7CA),
                           foregroundColor: Colors.white,
@@ -77,12 +80,21 @@ class _BatchesState extends State<Batches> {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       tileColor: Theme.of(context).primaryColor,
-                      title: Text(contacts.elementAt(index).name),
-                      subtitle: Text(contacts.elementAt(index).startTime),
+                      title: Text(_batches.elementAt(index).name),
+                      subtitle: Text(_batches.elementAt(index).startTime),
                       onLongPress: () {
-                        showDeleteBatchDialog(context, contacts[index]);
+                        showDeleteBatchDialog(context, _batches[index]);
                       },
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BatchContact(
+                              batch: _batches[index],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },

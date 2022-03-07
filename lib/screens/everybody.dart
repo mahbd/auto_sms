@@ -43,9 +43,18 @@ class _EveryBodyState extends State<EveryBody> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const TextField(
+                  TextField(
+                    style: const TextStyle(fontSize: 17),
                     keyboardType: TextInputType.multiline,
-                    maxLines: null,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      focusColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      labelText: 'Write a message',
+                    ),
                   ),
                   MaterialButton(
                     onPressed: () {

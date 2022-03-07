@@ -1,11 +1,12 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter/material.dart';
 
 import '../models/batch_model.dart';
-import 'batches.dart';
-import '../screens/messages.dart';
 import '../screens/contacts.dart';
 import '../screens/everybody.dart';
-import 'package:flutter/material.dart';
+import 'batch_contact.dart';
+import 'batches.dart';
+import 'clusters.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -172,6 +173,16 @@ class _HomePageState extends State<HomePage> {
                             child: Text('$index'),
                           ),
                           subtitle: Text(_batches[index].startTime),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BatchContact(
+                                  batch: _batches[index],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },

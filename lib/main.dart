@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../models/person_model.dart';
 import '../screens/homepage.dart';
+import '../models/person_model.dart';
 import '../models/batch_model.dart';
+import '../models/message_cluster.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(PersonAdapter());
   Hive.registerAdapter(BatchAdapter());
+  Hive.registerAdapter(MessageClusterAdapter());
   runApp(const MyApp());
 }
 
