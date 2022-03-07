@@ -1,3 +1,7 @@
+import 'package:auto_sms/screens/cluster_messages.dart';
+import 'package:auto_sms/send_sms.dart';
+
+import '../models/message_cluster.dart';
 import '../models/person_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -27,6 +31,7 @@ class _EveryBodyState extends State<EveryBody> {
   }
 
   final Map<String, bool> _checkBox = {};
+  final TextEditingController _msgController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,7 @@ class _EveryBodyState extends State<EveryBody> {
               child: Column(
                 children: [
                   TextField(
+                    controller: _msgController,
                     style: const TextStyle(fontSize: 17),
                     keyboardType: TextInputType.multiline,
                     maxLines: 4,
@@ -58,7 +64,22 @@ class _EveryBodyState extends State<EveryBody> {
                   ),
                   MaterialButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/add');
+                      MessageCluster cluster = sendMessages(
+                        box!,
+                        _msgController.text,
+                        _checkBox.keys
+                            .where((element) => false != _checkBox[element])
+                            .toList(),
+                      );
+                      _msgController.clear();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClusterMessages(
+                            cluster: cluster,
+                          ),
+                        ),
+                      );
                     },
                     color: Theme.of(context).primaryColor,
                     child: const Text('Send'),

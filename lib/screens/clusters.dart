@@ -39,12 +39,20 @@ class _MessagesState extends State<Messages> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasData) return const Text('No messages');
-            return ListView.builder(
+            return ListView.separated(
+              padding: const EdgeInsets.all(10.0),
+              separatorBuilder: (context, index) => const Divider(
+                height: 10,
+              ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final MessageCluster cluster = snapshot.data![index];
                 return ListTile(
+                  tileColor: Theme.of(context).primaryColor,
                   title: Text(cluster.messageBody),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   subtitle: Text(
                       'Sent: ${cluster.sentCount} Delivered: ${cluster.deliveredCount} Failed: ${cluster.failedCount} Pending: ${cluster.pendingCount}'),
                   onTap: () {
